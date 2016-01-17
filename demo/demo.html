@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>analogrange demo</title>
+<style type="text/css">
+    body { margin: 0; }
+    .range-box {
+        width: 200px;
+        margin: 50px auto 0;
+        height: 10px;
+        background: #ddd;
+        font-size: 0;
+        line-height: 0;
+    }
+    .range-bar {
+        position: relative;
+        display: block;
+        width: 10%;
+        height: 10px;
+        font-size: 0;
+        line-height: 0;
+        background: #ff8900;
+    }
+    .range-bar a {
+         position: absolute;
+         right: 0;
+         top: 50%;
+         width: 20px;
+         height: 20px;
+         border: 2px solid #f30;
+         margin: -12px -12px 0 0px;
+         background: #f60;
+    }
+    .ranage-val {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 12px;
+    }
+</style>
+</head>
+<body>
+    <div style="margin: 50px; position: relative;">
+        <div class="range-box" id='iRange'>
+            <div class="range-bar"><a href="javascript:;"></a></div>
+        </div>
+    </div>
+    
+    <div class="ranage-val" id="iVal"></div>
+    <script type="text/javascript" charset="utf-8" src="../lib/jquery/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../js/analogrange.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        !function(){
+            var iVal = document.getElementById('iVal');
+            var iRange = analogrange('#iRange', {
+                direction: 'x',
+                onchange: function(num){
+                    iVal.innerHTML = Math.round(num * 100) + '%';
+                }
+            });
+            iRange.changeTo(0.5);
+        }();
+    </script>
+</body>
+</html>
