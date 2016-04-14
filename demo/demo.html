@@ -13,7 +13,7 @@
         font-size: 0;
         line-height: 0;
     }
-    .range-bar {
+    .range-box .range-bar {
         position: relative;
         display: block;
         width: 10%;
@@ -22,7 +22,7 @@
         line-height: 0;
         background: #ff8900;
     }
-    .range-bar a {
+    .range-box .range-bar a {
          position: absolute;
          right: 0;
          top: 50%;
@@ -37,6 +37,37 @@
         text-align: center;
         font-size: 12px;
     }
+
+    .range-box-v {
+        width: 10px;
+        margin: 50px auto 0;
+        height: 200px;
+        background: #ddd;
+        font-size: 0;
+        line-height: 0;
+        position: relative;
+    }
+    .range-box-v .range-bar {
+        position: absolute;
+        display: block;
+        height: 10%;
+        width: 10px;
+        bottom: 0;
+        left: 0;
+        font-size: 0;
+        line-height: 0;
+        background: #ff8900;
+    }
+    .range-box-v .range-bar a {
+         position: absolute;
+         top: 0;
+         left: 50%;
+         width: 20px;
+         height: 20px;
+         border: 2px solid #f30;
+         margin: -12px 0 0 -12px;
+         background: #f60;
+    }
 </style>
 </head>
 <body>
@@ -45,8 +76,15 @@
             <div class="range-bar"><a href="javascript:;"></a></div>
         </div>
     </div>
-    
     <div class="ranage-val" id="iVal"></div>
+
+    <div style="margin: 50px; position: relative;">
+        <div class="range-box-v" id='iRangeV'>
+            <div class="range-bar"><a href="javascript:;"></a></div>
+        </div>
+    </div>
+    <div class="ranage-val" id="iVal2"></div>
+    
     <script type="text/javascript" charset="utf-8" src="../lib/jquery/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../js/analogrange.js"></script>
     <script type="text/javascript" charset="utf-8">
@@ -59,6 +97,16 @@
                 }
             });
             iRange.changeTo(0.5);
+
+            var iVal2 = document.getElementById('iVal2');
+            var iRange2 = analogrange('#iRangeV', {
+                direction: 'y',
+                reverse: true,
+                onchange: function(num){
+                    iVal2.innerHTML = Math.round(num * 100) + '%';
+                }
+            });
+            iRange2.changeTo(0.5);
         }();
     </script>
 </body>
