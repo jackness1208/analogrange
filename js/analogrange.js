@@ -2,8 +2,8 @@
  * Copyright 2016, jackness.org
  * Creator: Jackness Lau
  * $Author: Jackness Lau $
- * $Date: 2016.01.18 $
- * $Version: 1.0.0 $
+ * $Date: 2016.04.14 $
+ * $Version: 1.1.0 $
  */
 
 (function( global, factory ){
@@ -30,30 +30,35 @@ var $ = jQuery;
 var fn = {
     getPosition: function(target){
         var contentDocument = document; 
-        arguments[2]
-            ? contentDocument = arguments[2]
-            :""; 
+        if(arguments[2]){
+            contentDocument = arguments[2];
+        }
+
         var _x = target.offsetLeft; 
         var _y = target.offsetTop; 
         if($(target).css("position") == "fixed"){
             _x += contentDocument.documentElement.scrollLeft || contentDocument.body.scrollLeft; 
             _y += contentDocument.documentElement.scrollTop || contentDocument.body.scrollTop; 
         } 
-        while(target = target.offsetParent){
+        target = target.offsetParent;
+        while(target){
             _x += target.offsetLeft || 0; 
             _y += target.offsetTop || 0; 
+            target = target.offsetParent;
         } 
         return {
             left:_x, 
             top:_y 
-        } 
+        }; 
     },
     upper1stLetter: function(str){
         return str.charAt(0).toUpperCase() + str.substr(1);
     },
     preventDefault: function(e){
         e = e || window.event;
-        e.preventDefault && e.preventDefault();
+        if(e.preventDefault){
+            e.preventDefault();
+        }
         e.returnValue = false;
     },
     px2precent: function(she, val){
@@ -65,8 +70,13 @@ var fn = {
         return fn.precentFix(iPrecent);
     },
     precentFix: function(val){
-        val < 0 && (val = 0);
-        val > 1 && (val = 1);
+        if(val < 0){
+            val = 0;
+        }
+        if(val > 1){
+            val = 1;
+        }
+
 
         return Math.round(val * 100) / 100;
 
@@ -80,6 +90,9 @@ var
         direction: 'x',
         // 滑动时触发事件
         onchange: function(precent){},
+
+        // 反向
+        reverse: false,
         
         // 初始化完成回调函数
         onready: function(){}
@@ -125,15 +138,17 @@ analogrange.fn = analogrange.prototype = {
 
 // + analogrange
 var init = analogrange.fn.init = function(target, op){
+    console.log(this);
     var 
         she = this,
         o = she.options = $.fn.extend({}, options, op);
 
     $.fn.extend(she, attributes);
+
     var 
         tar = she.target = $(target)[0],
         bar = she.bar = $(target)[0].children[0],
-        key = she.key;
+        key = she.key = $.fn.extend({}, attributes.key);
 
     if(o.direction == 'x'){
         key.pos = 'left';
@@ -157,7 +172,14 @@ var init = analogrange.fn.init = function(target, op){
             posM: 0,
             down: function(e){
                 e = e || window.event;
-                mouse.posM = e['client' + key.dir2] - bar['offset' + key.wh2];
+                var clientM = e['client' + key.dir2];
+
+                if(o.reverse){
+                    clientM = - clientM;
+                }
+
+                mouse.posM = clientM - bar['offset' + key.wh2];
+
 
                 $(document).on('mousemove', mouse.move);
                 $(document).on('mouseup', mouse.up);
@@ -168,8 +190,14 @@ var init = analogrange.fn.init = function(target, op){
             },
             move: function(e){
                 e = e || window.event;
-                var 
-                    nowPrecent = fn.px2precent(she, e['client' + key.dir2] - mouse.posM);
+                var clientM = e['client' + key.dir2];
+
+                if(o.reverse){
+                    clientM = - clientM;
+                }
+                var iPos = clientM - mouse.posM;
+
+                var nowPrecent = fn.px2precent(she, iPos);
 
                 she.changeTo(nowPrecent);
                 fn.preventDefault(e);
@@ -187,6 +215,10 @@ var init = analogrange.fn.init = function(target, op){
         e = e || window.event;
         var iPos = e['client' + key.dir2] - fn.getPosition(tar)[key.pos];
         var nowPrecent = fn.px2precent(she, iPos);
+
+        if(o.reverse){
+            nowPrecent = 1 - nowPrecent;
+        }
         she.changeTo(nowPrecent);
     });
 
