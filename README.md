@@ -26,6 +26,7 @@ analogrange('#iRange', {
  *                         op.direction             [String]   滑块方向 x|y
  *                         op.onchange              [function] 滑动时触发事件
  *                         op.onready               [function] 初始化完成回调函数
+ *                         op.reverse               [boolean]  滑动方向反向, 默认为 false
  * @return {Object}        iRange 方法句柄
  *                         iRange.changeTo(precent) [function] 设置滑块位置
  *                         - precent                [Float]    0-1 之间
@@ -35,5 +36,10 @@ analogrange(target, op);
 ## 例子
 [例子1](demo/demo.html)
 ## 更新历史
+
+> 1.1.0 (2016-04-14)
+> [ADD] 添加 op.reverse 属性， 用于设置 滑动相反，默认为 自左而右， 自上而下
+> [FIX] 修复不同方向组件 会出现混乱问题
+
 > 1.0.0 (2016-01-18)
 > * 诞生
