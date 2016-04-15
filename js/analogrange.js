@@ -138,7 +138,6 @@ analogrange.fn = analogrange.prototype = {
 
 // + analogrange
 var init = analogrange.fn.init = function(target, op){
-    console.log(this);
     var 
         she = this,
         o = she.options = $.fn.extend({}, options, op);
