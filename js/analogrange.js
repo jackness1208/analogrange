@@ -2,10 +2,9 @@
  * Copyright 2016, jackness.org
  * Creator: Jackness Lau
  * $Author: Jackness Lau $
- * $Date: 2016.04.14 $
- * $Version: 1.1.0 $
+ * $Date: 2016.05.14 $
+ * $Version: 1.1.1 $
  */
-
 (function( global, factory ){
     if ( typeof module === "object" && typeof module.exports === "object" ) {
     
@@ -66,6 +65,7 @@ var fn = {
             o = she.options,
             key = she.key,
             iPrecent = val / she.target['offset' + key.wh2];
+
 
         return fn.precentFix(iPrecent);
     },
@@ -202,6 +202,7 @@ var init = analogrange.fn.init = function(target, op){
                 fn.preventDefault(e);
             },
             up: function(e){
+
                 e = e || window.event;
                 $(document).off('mousemove', mouse.move);
                 $(document).off('mouseup', mouse.up);
@@ -212,7 +213,7 @@ var init = analogrange.fn.init = function(target, op){
 
     $(tar).on('click', function(e){
         e = e || window.event;
-        var iPos = e['client' + key.dir2] - fn.getPosition(tar)[key.pos];
+        var iPos = e['client' + key.dir2] - fn.getPosition(tar)[key.pos] + document.body['scroll' + key.pos2];
         var nowPrecent = fn.px2precent(she, iPos);
 
         if(o.reverse){
@@ -242,4 +243,6 @@ if ( typeof noGlobal === 'undefined' ) {
 }
 
 });
+
+
 
